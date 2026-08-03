@@ -18,160 +18,54 @@
 <link rel="canonical" href="https://stalaveralodos-ux.github.io/thesis-scrollytelling/">
 <style>
   :root{
-    --cream:#FFF7E6;
-    --blush:#F7C8D3;
-    --rosewood:#B46A72;
-    --sage:#A8B58A;
-    --misty:#A9B7C6;
-    --midnight:#2D3A47;
-    --eu-ref: rgba(45,58,71,0.45);
+    --cream:#FFF7E6; --blush:#F7C8D3; --rosewood:#B46A72; --sage:#A8B58A; --misty:#A9B7C6; --midnight:#2D3A47;
     --serif: 'Lora','Source Serif Pro', Georgia, serif;
     --sans: 'Inter','Work Sans','Helvetica Neue', Arial, sans-serif;
-    --ease: cubic-bezier(0.25,0.1,0.25,1);
+    --ease: cubic-bezier(0.25,0.1,0.25,1); --dur: .5s;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--cream);
-    color:var(--midnight);
-    font-family:var(--sans);
-    line-height:1.75;
+  body{margin:0; background:var(--cream); color:var(--midnight); font-family:var(--sans); line-height:1.75;}
+  @media (prefers-reduced-motion: reduce){
+    :root{--dur:.01s;} html{scroll-behavior:auto;}
+    *{animation-duration:.01s !important; transition-duration:.01s !important;}
   }
+  .chapternav{position:fixed; left:14px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:14px; z-index:20;}
+  .chapternav button{width:9px; height:9px; border-radius:50%; border:1px solid var(--midnight); background:transparent; cursor:pointer; padding:0; position:relative;}
+  .chapternav button.active{background:var(--rosewood); border-color:var(--rosewood);}
+  .chapternav button .lbl{position:absolute; left:18px; top:50%; transform:translateY(-50%); font-size:0.68rem; white-space:nowrap; opacity:0; transition:opacity .2s; background:var(--cream); padding:2px 6px; border-radius:2px;}
+  .chapternav button:hover .lbl{opacity:1;}
+  @media (max-width:860px){ .chapternav{display:none;} }
   .layout{display:flex; align-items:flex-start;}
   .narrative{width:40%; padding:4vw 3vw 4vw 6vw;}
-  .viz-col{
-    width:60%;
-    position:sticky;
-    top:0;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:2vw;
-    background:var(--cream);
-  }
-  .viz-frame{
-    width:100%;
-    max-width:620px;
-    aspect-ratio:1/1;
-    position:relative;
-  }
-  .viz-panel{
-    position:absolute; inset:0;
-    opacity:0;
-    transform:translateY(14px);
-    transition:opacity .5s var(--ease), transform .5s var(--ease);
-    pointer-events:none;
-  }
+  .viz-col{width:60%; position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; padding:2vw; background:var(--cream);}
+  .viz-frame{width:100%; max-width:620px; aspect-ratio:1/1; position:relative;}
+  .viz-panel{position:absolute; inset:0; opacity:0; transform:translateY(14px); transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease); pointer-events:none;}
   .viz-panel.active{opacity:1; transform:translateY(0); pointer-events:auto;}
-
-  .eyebrow{
-    text-transform:uppercase;
-    letter-spacing:0.16em;
-    font-size:0.72rem;
-    font-weight:600;
-    color:var(--sage);
-    margin-bottom:0.9rem;
-  }
+  .eyebrow{text-transform:uppercase; letter-spacing:0.16em; font-size:0.72rem; font-weight:600; color:var(--sage); margin-bottom:0.9rem;}
   h1,h2,h3{font-family:var(--serif); font-weight:500; color:var(--midnight); margin:0;}
-
-  .beat{
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    padding:8vh 0;
-    border-bottom:1px solid rgba(45,58,71,0.08);
-  }
-  .beat p{
-    font-size:1.05rem;
-    max-width:46ch;
-    margin:0 0 1rem 0;
-  }
+  .beat{min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:8vh 0; border-bottom:1px solid rgba(45,58,71,0.08);}
+  .beat p{font-size:1.05rem; max-width:46ch; margin:0 0 1rem 0;}
   .beat.transition{min-height:40vh; opacity:0.9;}
-
+  .question{font-family:var(--serif); font-style:italic; font-size:1.25rem; color:var(--rosewood); max-width:44ch; margin:0.4rem 0 1rem 0; border-left:2px solid var(--rosewood); padding-left:0.9rem;}
   .hero h1{font-size:clamp(2rem,4vw,3.1rem); max-width:14ch; margin-bottom:1rem;}
   .stat-line{font-family:var(--serif); font-size:1.8rem; color:var(--rosewood); margin:1rem 0;}
-  .count{font-weight:600;}
-
-  blockquote{
-    font-family:var(--serif);
-    font-style:italic;
-    font-size:1.35rem;
-    line-height:1.6;
-    color:var(--midnight);
-    background:var(--blush);
-    padding:1.4rem 1.6rem;
-    border-radius:2px;
-    margin:1.2rem 0;
-    max-width:46ch;
-  }
-  blockquote.nuance{background:var(--misty);}
-
-  .tag{
-    display:inline-block;
-    font-size:0.7rem;
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-    font-weight:700;
-    padding:0.2rem 0.55rem;
-    border-radius:2px;
-    color:#fff;
-    margin-bottom:0.6rem;
-  }
+  blockquote{font-family:var(--serif); font-style:italic; font-size:1.35rem; line-height:1.6; color:var(--midnight); background:var(--blush); padding:1.4rem 1.6rem; border-left:4px solid var(--rosewood); border-radius:0 2px 2px 0; margin:1.2rem 0; max-width:46ch;}
+  blockquote.nuance{background:var(--misty); border-left-color:var(--midnight);}
+  .tag{display:inline-block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; padding:0.2rem 0.55rem; border-radius:2px; color:#fff; margin-bottom:0.6rem;}
   .tag.turin{background:var(--misty); color:var(--midnight);}
   .tag.barcelona{background:var(--rosewood);}
   .tag.athens{background:var(--sage); color:var(--midnight);}
-
-  .reflective{
-    background:var(--blush);
-    padding:1.6rem 1.8rem;
-    border-radius:2px;
-    max-width:46ch;
-  }
-
-  .glossary-term{
-    border-bottom:1px dotted var(--sage);
-    cursor:help;
-    position:relative;
-  }
-  .glossary-term .tip{
-    display:none;
-    position:absolute;
-    bottom:125%; left:0;
-    background:var(--cream);
-    border:1px solid var(--sage);
-    padding:0.6rem 0.8rem;
-    font-size:0.85rem;
-    width:260px;
-    border-radius:3px;
-    box-shadow:0 4px 12px rgba(45,58,71,0.15);
-    z-index:5;
-  }
+  .reflective{background:var(--blush); padding:1.6rem 1.8rem; border-radius:2px; max-width:46ch;}
+  .glossary-term{border-bottom:1px dotted var(--sage); cursor:help; position:relative;}
+  .glossary-term .tip{display:none; position:absolute; bottom:125%; left:0; background:var(--cream); border:1px solid var(--sage); padding:0.6rem 0.8rem; font-size:0.85rem; width:260px; border-radius:3px; box-shadow:0 4px 12px rgba(45,58,71,0.15); z-index:5;}
   .glossary-term:hover .tip{display:block;}
-
   .city-cards{display:flex; flex-direction:column; gap:1rem; max-width:46ch;}
-  .city-card{
-    background:#fff;
-    border:1px solid rgba(45,58,71,0.12);
-    padding:1rem 1.2rem;
-    border-radius:3px;
-    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
-    position:relative;
-  }
+  .city-card{background:#fff; border:1px solid rgba(45,58,71,0.12); padding:1rem 1.2rem; border-radius:3px; transition:transform .3s var(--ease), box-shadow .3s var(--ease); position:relative;}
   .city-card:hover{transform:translateY(-4px); box-shadow:0 6px 18px rgba(180,106,114,0.18);}
   .city-card h3{font-size:1rem; margin-bottom:0.3rem;}
-  .city-card .tip{
-    display:none;
-    font-style:italic;
-    font-size:0.85rem;
-    margin-top:0.5rem;
-    color:var(--rosewood);
-  }
-  .city-card:hover .tip{display:block;}
-
-  /* Closing */
+  .city-card .tip{display:none; font-style:italic; font-size:0.85rem; margin-top:0.5rem; color:var(--rosewood);}
+  .city-card:hover .tip, .city-card:focus-within .tip{display:block;}
   .closing-wrap{background:var(--midnight);}
   .closing-wrap .narrative{padding:8vh 3vw 8vh 6vw;}
   .closing-wrap blockquote{background:transparent; color:var(--cream); border-left:2px solid var(--sage); padding-left:1.2rem; font-size:1.6rem;}
@@ -180,156 +74,175 @@
   .final-line{font-family:var(--serif); font-size:1.3rem; color:var(--cream); border-bottom:1px solid var(--sage); display:inline-block; padding-bottom:4px;}
   .meta-foot{font-size:0.85rem; color:#9aa4ad; margin-top:2rem;}
   .meta-foot a{color:var(--sage);}
-
-  /* SVG helpers */
   svg{width:100%; height:100%; overflow:visible;}
-  .bar-bg{fill:var(--misty); opacity:0.25;}
   .axis-line{stroke:var(--midnight); stroke-width:1;}
   .caption{font-family:var(--sans); font-size:13px; fill:var(--midnight);}
   .value-label{font-family:var(--serif); font-size:15px; fill:var(--midnight); font-weight:600;}
   .panel-title{font-family:var(--sans); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; fill:var(--sage); font-weight:700;}
-
+  .heat-label{font-family:var(--sans); font-size:12px; fill:var(--midnight);}
   @media (max-width:860px){
     .layout{flex-direction:column;}
     .narrative,.viz-col{width:100%;}
-    .viz-col{position:relative; height:60vh;}
+    .viz-col{position:sticky; top:0; height:40vh; z-index:1;}
+    .narrative{padding:6vh 6vw;}
   }
 </style>
 </head>
 <body>
 
+<nav class="chapternav" id="chapterNav">
+  <button data-jump="0"><span class="lbl">Apertura</span></button>
+  <button data-jump="1a"><span class="lbl">01 · El marco</span></button>
+  <button data-jump="2a"><span class="lbl">02 · Turín</span></button>
+  <button data-jump="3a"><span class="lbl">03 · Barcelona</span></button>
+  <button data-jump="4a"><span class="lbl">04 · Atenas</span></button>
+  <button data-jump="5a"><span class="lbl">05 · Comparativa</span></button>
+  <button data-jump="6a"><span class="lbl">06 · Bottom-up</span></button>
+  <button data-jump="7"><span class="lbl">07 · Cierre</span></button>
+</nav>
+
 <div class="layout">
   <div class="narrative">
 
-    <!-- ESCENA 0 -->
-    <section class="beat hero" data-scene="0">
+    <section class="beat hero" data-scene="0" id="jump-0">
       <span class="eyebrow">Doctoral Thesis · Scuola Superiore Sant'Anna, Pisa</span>
       <h1>The Constitutional Role of Municipalities in the Governance of Social Rights</h1>
       <p>Un estudio comparado de Turín, Barcelona y Atenas sobre cómo la autonomía local determina el acceso real a la educación, la salud y la vivienda.</p>
       <div class="stat-line">Menos del <span class="count" id="countHero">0</span>%. En las tres ciudades.</div>
-      <blockquote>Municipalities are indispensable first responders in the daily realisation of social rights, yet their effectiveness is constrained by constitutional architecture, fiscal regimes, and intergovernmental relations.</blockquote>
+      <p class="question">¿Cómo puede fallar de la misma forma la vivienda pública en tres sistemas constitucionales tan distintos?</p>
     </section>
 
-    <!-- ESCENA 0.5 -->
     <section class="beat transition" data-scene="05">
       <p style="font-style:italic; max-width:44ch;">En Europa, la realización de derechos sociales depende cada vez más de los municipios. Pero su capacidad no es homogénea: está moldeada por el diseño constitucional.</p>
+      <p class="question">¿Qué significa, en la práctica, tener "autonomía" si al final no alcanza para cumplir?</p>
     </section>
 
-    <!-- ESCENA 1 -->
-    <section class="beat" data-scene="1a">
+    <section class="beat" data-scene="1a" id="jump-1a">
       <span class="eyebrow">01 — El marco</span>
       <h2>¿Compromiso o impacto?</h2>
-      <p><blockquote style="font-size:1.15rem;">How does <span class="glossary-term">local autonomy<span class="tip">"Local autonomy is structured and limited by the allocation of competences, fiscal arrangements, and mechanisms of conflict-resolution." — Final Reflections</span></span> shape the capacity of municipalities to implement fundamental social rights — housing, health, and education — on a universal basis?</blockquote></p>
+      <blockquote>How does <span class="glossary-term">local autonomy<span class="tip">"Local autonomy is structured and limited by the allocation of competences, fiscal arrangements, and mechanisms of conflict-resolution." — Final Reflections</span></span> shape the capacity of municipalities to implement fundamental social rights — housing, health, and education — on a universal basis?</blockquote>
     </section>
     <section class="beat" data-scene="1b">
       <p>El marco distingue dos dimensiones. <strong>Commitment</strong>: las decisiones proactivas — planes estratégicos, recursos, redes, innovación. <strong>Impact</strong>: los resultados tangibles — cobertura, accesibilidad, inclusión.</p>
-      <p>Mantenerlas separadas evita confundir un discurso ambicioso con resultados reales.</p>
+      <p class="question">¿Pero cómo distinguir una ciudad que promete de una que realmente cumple?</p>
     </section>
     <section class="beat" data-scene="1c">
       <p>Turín, Barcelona y Atenas fueron elegidas como <em>"most similar cases"</em>: retos sociales agudos, poblaciones diversas, fuerte compromiso político declarado. Lo que varía es el diseño constitucional — cuasi-federalismo español, regionalismo italiano, centralismo griego.</p>
+      <p class="question">Empecemos por la ciudad con menos poder formal en el papel: ¿qué hace Turín con lo poco que tiene?</p>
     </section>
 
-    <!-- ESCENA 2 — TURIN -->
-    <section class="beat" data-scene="2a">
+    <section class="beat" data-scene="2a" id="jump-2a">
       <span class="tag turin">Turín</span>
       <h2>Compromiso alto, impacto a medias</h2>
       <p>Italia: sistema regionalizado (Art. 117 Const.). El espacio municipal está mediado por la ley regional y la <span class="glossary-term">jurisprudencia<span class="tip">La Corte costituzionale ha protegido a veces la discreción local en educación y servicios sociales, pero suele confirmar la primacía regional en salud y vivienda.</span></span> constitucional.</p>
+      <p class="question">¿Alcanza la innovación municipal cuando el mapa de la ciudad no es parejo?</p>
     </section>
     <section class="beat" data-scene="2b">
-      <p>Cobertura de guarderías (<em>nidi</em>): 38,3% de la ciudad — por encima del objetivo mínimo del 33%. Pero la brecha territorial es marcada: más del 60% en el centro, menos del 25% en la periferia norte.</p>
+      <p>Cobertura de guarderías (<em>nidi</em>): 38,3% de la ciudad — por encima del objetivo mínimo del 33%. Pero el mapa cuenta otra historia: más del 60% en el centro, menos del 25% en la periferia norte.</p>
+      <p class="question">Si la educación ya muestra esta brecha territorial, ¿qué pasa con algo tan escaso como la vivienda?</p>
     </section>
     <section class="beat" data-scene="2c">
-      <p>17.656 unidades de vivienda pública (ERP) en 2024 — solo 3,4% del stock total. La última convocatoria recibió 7.368 solicitudes; la ciudad asigna apenas ~519 viviendas al año desde 1996 (387 en 2024).</p>
+      <p>17.656 unidades de vivienda pública (ERP) en 2024 — solo 3,4% del stock total. La última convocatoria recibió 7.368 solicitudes; de ellas, 1.763 eran de necesidad acuciante. La ciudad asigna apenas ~519 viviendas al año desde 1996 (387 en 2024).</p>
+      <p class="question">¿Qué le queda a una ciudad cuando la demanda multiplica por catorce lo que puede ofrecer?</p>
     </section>
     <section class="beat" data-scene="2d">
       <blockquote>Turin would rank high in commitment but only moderate-to-high in impact, reflecting the tension between ambition and constraint.</blockquote>
       <p style="font-size:0.95rem; color:#4a5560;">Salud: Case della Comunità — centros multidisciplinarios de atención primaria y social, descentralizados por barrio.</p>
+      <p class="question">Si Turín innova dentro de límites estrechos, ¿qué pasa en una ciudad con más poder regulatorio real, como Barcelona?</p>
     </section>
 
-    <!-- ESCENA 3 — BARCELONA -->
-    <section class="beat" data-scene="3a">
+    <section class="beat" data-scene="3a" id="jump-3a">
       <span class="tag barcelona">Barcelona</span>
       <h2>La innovación choca con el mercado</h2>
-      <p>España: el reconocimiento textual más claro de autonomía municipal (Art. 140 Const.), limitado en la práctica por las Comunidades Autónomas.</p>
+      <p>España: el reconocimiento textual más claro de autonomía municipal (Art. 140 Const.), aunque limitado en la práctica por las Comunidades Autónomas.</p>
+      <p class="question">¿Alcanza tener más poder regulatorio si el mercado se mueve más rápido que la política pública?</p>
     </section>
     <section class="beat" data-scene="3b">
       <p>El índice de diversidad escolar subió de 50% a 70%; la segregación escolar se redujo un 25% (Fundació Bofill, 2025). La oferta municipal cubre ~55% de la demanda total de plazas.</p>
+      <p class="question">Si en educación la política logró revertir la segregación, ¿por qué no ocurre lo mismo con la vivienda?</p>
     </section>
     <section class="beat" data-scene="3c">
-      <p>Pero en vivienda: solo <strong>~2%</strong> del stock es público o social. Los alquileres subieron <strong>70%</strong> en una década — los salarios, solo <strong>17,5%</strong>. El 71,4% de los inquilinos destina más de 30% de su ingreso a vivienda.</p>
+      <p>Solo <strong>~2%</strong> del stock de vivienda es público o social. Los alquileres subieron <strong>70%</strong> en una década — los salarios, solo <strong>17,5%</strong>. El 71,4% de los inquilinos destina más de 30% de su ingreso a vivienda.</p>
+      <p class="question">¿Y si ni siquiera el dinero garantiza un trato igual en ese mercado?</p>
     </section>
     <section class="beat" data-scene="3d">
       <div class="reflective">
         <p style="margin:0;">En solicitudes de alquiler: 56,6% de respuesta a nombres catalanes frente a 37,8% a nombres árabes. En un estudio de 350 llamadas a inmobiliarias, 62% admitió disposición a discriminar.</p>
       </div>
+      <p class="question">Autonomía formal en el papel, mercado desregulado en la práctica: ¿qué pasa en el extremo opuesto — una ciudad sin apenas autonomía?</p>
     </section>
 
-    <!-- ESCENA 4 — ATENAS -->
-    <section class="beat" data-scene="4a">
+    <section class="beat" data-scene="4a" id="jump-4a">
       <span class="tag athens">Atenas</span>
       <h2>Autonomía formal, no material</h2>
       <p>Grecia: autonomía local reconocida en el Art. 102 Const., pero vaciada en la práctica por el financiamiento centralizado y la supervisión fiscal estricta.</p>
+      <p class="question">¿De qué sirve un derecho reconocido en la Constitución si no hay presupuesto para ejercerlo?</p>
     </section>
     <section class="beat" data-scene="4b">
       <p>Matrícula preescolar: 79,8% (2016) → 81,5% (2017) — muy por debajo del 95,4% de media UE. Solo 15% de niños con discapacidad asiste a la escuela pese al marco legal de inclusión.</p>
+      <p class="question">Y cuando el sistema ya está bajo presión, ¿qué pasa con los grupos que estaban más al margen?</p>
     </section>
     <section class="beat" data-scene="4c">
       <p>La matrícula en estructuras educativas para refugiados (DYEP) cayó de 54–63% (2016) a 43–53%. Más del 70% de los hogares griegos son propietarios; la vivienda pública representa menos del 1,6% del stock de Atenas.</p>
+      <p class="question">Tres ciudades, tres constituciones — ¿tienen en común algo más que el idioma de sus leyes?</p>
     </section>
     <section class="beat" data-scene="4d">
       <blockquote>Athens has sought to offset these limits through EU-funded pilot schemes and partnerships with NGOs — solidarity networks and refugee schools, though precarious, represent distinctive municipal–civil society responses.</blockquote>
     </section>
 
-    <!-- ESCENA 5 — COMPARACIÓN -->
-    <section class="beat" data-scene="5a">
+    <section class="beat" data-scene="5a" id="jump-5a">
       <span class="eyebrow">05 — La comparación cruzada</span>
       <h2>Tres constituciones, un mismo déficit</h2>
       <p>Centralismo griego, regionalismo italiano, cuasi-federalismo español: tres arquitecturas constitucionales muy distintas.</p>
+      <p class="question">Si el diseño constitucional es tan distinto, ¿por qué el resultado en vivienda es prácticamente el mismo?</p>
     </section>
     <section class="beat" data-scene="5b">
-      <p>Y sin embargo, las tres llegan al mismo resultado estructural: un déficit crónico de vivienda pública, muy por debajo de la media europea (~9,3%, Housing Europe/OECD — referencia externa, no de la tesis).</p>
+      <p>Las tres llegan al mismo resultado estructural: un déficit crónico de vivienda pública, muy por debajo de la media europea (~9,3%, Housing Europe/OECD — referencia externa, no de la tesis).</p>
+      <p class="question">Entonces, ¿qué determina realmente el resultado, si no es solo el grado de autonomía?</p>
     </section>
     <section class="beat" data-scene="5c">
       <p>La autonomía local no predice por sí sola el resultado. El diseño constitucional fija los límites externos de la acción municipal: la voluntad política y la innovación no pueden compensar la ausencia de competencias claras y financiamiento estable.</p>
+      <p class="question">Si la ley formal no alcanza, ¿quién llena ese vacío en el día a día?</p>
     </section>
 
-    <!-- ESCENA 6 -->
-    <section class="beat" data-scene="6a">
+    <section class="beat" data-scene="6a" id="jump-6a">
       <span class="eyebrow">06 — Constitutionalism from below</span>
       <h2>La ley en los papeles, la ley en la práctica</h2>
       <blockquote>Bottom-up practices... fill the gap between the law on the books and the law in action, influencing which rights become enforceable, which competences are activated, and how higher authorities must respond.</blockquote>
+      <p class="question">¿Significa esto que lo que hacen los municipios "desde abajo" es siempre progresista?</p>
     </section>
     <section class="beat" data-scene="6b">
       <blockquote class="nuance">The transformative potential of "constitutionalism from below" should not be overstated. [...] bottom-up practices are not inherently progressive: municipalities have also adopted exclusionary measures, such as evictions in Athens or difficulties in accessing empadronamiento in Barcelona.</blockquote>
+      <p class="question">¿Cómo se ve esto en la práctica, ciudad por ciudad?</p>
     </section>
     <section class="beat" data-scene="6c">
       <div class="city-cards">
-        <div class="city-card">
+        <div class="city-card" tabindex="0">
           <h3>Turín</h3>
           <p style="margin:0; font-size:0.95rem;">Pactos educativos comunitarios, mediación intercultural.</p>
         </div>
-        <div class="city-card">
+        <div class="city-card" tabindex="0">
           <h3>Barcelona</h3>
           <p style="margin:0; font-size:0.95rem;">Derecho de tanteo y retracto, 30% de vivienda social en nuevas promociones.</p>
           <div class="tip">"Municipal initiatives such as the right of first refusal (tanteig i retracte)..."</div>
         </div>
-        <div class="city-card">
+        <div class="city-card" tabindex="0">
           <h3>Atenas</h3>
           <p style="margin:0; font-size:0.95rem;">Redes de solidaridad, escuelas para refugiados pese a la centralización.</p>
           <div class="tip">"Athens' solidarity networks and refugee schools... represent distinctive municipal–civil society responses."</div>
         </div>
       </div>
+      <p class="question">Entonces, después de todo esto: ¿qué depende realmente de un municipio — y qué no?</p>
     </section>
 
   </div>
   <div class="viz-col"><div class="viz-frame" id="vizFrame"></div></div>
 </div>
 
-<!-- ESCENA 7 — CIERRE -->
 <div class="closing-wrap">
   <div class="layout">
     <div class="narrative">
-      <section class="beat" data-scene="7" style="border:none; min-height:auto; padding:10vh 0;">
+      <section class="beat" data-scene="7" id="jump-7" style="border:none; min-height:auto; padding:10vh 0;">
         <span class="eyebrow">07 — Reflexión final</span>
         <blockquote>Municipalities are constitutional intermediaries. They are indispensable in the everyday realisation of social rights, yet their capacity is structured and limited by the allocation of competences, fiscal arrangements, and mechanisms of conflict-resolution.</blockquote>
         <p>El futuro de la realización de derechos está en la interacción entre niveles de gobierno — en oficinas municipales, centros de barrio, clínicas, escuelas — y en la disposición de Estados y regiones a sostener, en lugar de socavar, la acción local.</p>
@@ -345,48 +258,12 @@
 
 <script>
 const COLORS = { turin:"#A9B7C6", barcelona:"#B46A72", athens:"#A8B58A", eu:"rgba(45,58,71,0.45)", ink:"#2D3A47" };
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ---- chart builders (return innerHTML string for a viz-panel) ----
 function bar(x,y,w,h,fill,rx=2){ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" rx="${rx}"/>`; }
 function txt(x,y,text,cls="caption",anchor="start"){ return `<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${text}</text>`; }
 
-function housingBars(active){
-  // active: 'none' | 'turin' | 'barcelona' | 'athens' | 'all'
-  const data = [
-    {k:'turin', label:'Turín', val:3.4, color:COLORS.turin},
-    {k:'barcelona', label:'Barcelona', val:2, color:COLORS.barcelona},
-    {k:'athens', label:'Atenas', val:1.6, color:COLORS.athens},
-  ];
-  const maxScale = 10; // shared scale 0-10%
-  const chartW = 380, barH=34, gap=26, startY=60, startX=140;
-  let svg = `<svg viewBox="0 0 560 320">`;
-  svg += txt(0,24,"VIVIENDA PÚBLICA — % DEL STOCK TOTAL","panel-title");
-  data.forEach((d,i)=>{
-    const y = startY + i*(barH+gap);
-    const w = (active==='none') ? 0 : (active==='all' || active===d.k) ? (d.val/maxScale)*chartW : 0;
-    svg += bar(startX,y,chartW, barH, "#00000010",1);
-    svg += bar(startX,y,w, barH, d.color,1);
-    if(active==='all' || active===d.k){
-      svg += txt(startX-12,y+barH/2+5, d.label, "caption", "end");
-      svg += txt(startX+w+10,y+barH/2+5, d.val+"%", "value-label");
-    }
-  });
-  if(active==='all'){
-    const euX = startX + (9.3/maxScale)*chartW;
-    svg += `<line x1="${euX}" y1="${startY-16}" x2="${euX}" y2="${startY + data.length*(barH+gap)}" stroke="${COLORS.ink}" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.55"/>`;
-    svg += txt(euX+6, startY-20, "Media UE ~9,3%", "caption");
-  }
-  svg += `</svg>`;
-  return svg;
-}
-
-function heroCount(){
-  return `<svg viewBox="0 0 560 320">
-    ${txt(0,24,"VIVIENDA PÚBLICA — LAS TRES CIUDADES","panel-title")}
-    ${housingBarsInner('all')}
-  </svg>`;
-}
-function housingBarsInner(active){
+function housingBarsInner(){
   const data = [
     {k:'turin', label:'Turín', val:3.4, color:COLORS.turin},
     {k:'barcelona', label:'Barcelona', val:2, color:COLORS.barcelona},
@@ -404,11 +281,54 @@ function housingBarsInner(active){
   });
   return s;
 }
+function housingBarsStatic(activeKey){
+  const data = [
+    {k:'turin', label:'Turín', val:3.4, color:COLORS.turin},
+    {k:'barcelona', label:'Barcelona', val:2, color:COLORS.barcelona},
+    {k:'athens', label:'Atenas', val:1.6, color:COLORS.athens},
+  ];
+  const maxScale = 10, chartW = 380, barH=34, gap=26, startY=60, startX=140;
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"VIVIENDA PÚBLICA — % DEL STOCK TOTAL","panel-title")}`;
+  data.forEach((d,i)=>{
+    const y = startY + i*(barH+gap);
+    const on = (!activeKey || activeKey===d.k);
+    const w = on ? (d.val/maxScale)*chartW : 0;
+    svg += bar(startX,y,chartW, barH, "#00000010",1);
+    svg += bar(startX,y,w, barH, d.color,1);
+    if(on){ svg += txt(startX-12,y+barH/2+5, d.label, "caption", "end"); svg += txt(startX+w+10,y+barH/2+5, d.val+"%", "value-label"); }
+  });
+  svg += `</svg>`;
+  return svg;
+}
+function heroCount(){ return `<svg viewBox="0 0 560 320">${txt(0,24,"VIVIENDA PÚBLICA — LAS TRES CIUDADES","panel-title")}${housingBarsInner()}</svg>`; }
+
+function crossComparison(step){
+  const data = [
+    {k:'turin', label:'Turín', val:3.4, color:COLORS.turin, min:1},
+    {k:'barcelona', label:'Barcelona', val:2, color:COLORS.barcelona, min:2},
+    {k:'athens', label:'Atenas', val:1.6, color:COLORS.athens, min:3},
+  ];
+  const maxScale = 10, chartW = 380, barH=34, gap=26, startY=60, startX=140;
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"VIVIENDA PÚBLICA — COMPARACIÓN CRUZADA","panel-title")}`;
+  data.forEach((d,i)=>{
+    const y = startY + i*(barH+gap);
+    const show = step>=d.min;
+    const w = show ? (d.val/maxScale)*chartW : 0;
+    svg += bar(startX,y,chartW, barH, "#00000010",1);
+    svg += bar(startX,y,w, barH, d.color,1);
+    if(show){ svg += txt(startX-12,y+barH/2+5, d.label, "caption", "end"); svg += txt(startX+w+10,y+barH/2+5, d.val+"%", "value-label"); }
+  });
+  if(step>=4){
+    const euX = startX + (9.3/maxScale)*chartW;
+    svg += `<line x1="${euX}" y1="${startY-16}" x2="${euX}" y2="${startY + data.length*(barH+gap)}" stroke="${COLORS.ink}" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>`;
+    svg += txt(euX+6, startY-20, "Media UE ~9,3%", "caption");
+  }
+  svg += `</svg>`;
+  return svg;
+}
 
 function ciAxis(points){
-  // points: array of {k,label,color,cx,cy} to show (accumulate)
-  let svg = `<svg viewBox="0 0 560 400">`;
-  svg += txt(0,24,"MATRIZ COMMITMENT – IMPACT","panel-title");
+  let svg = `<svg viewBox="0 0 560 400">${txt(0,24,"MATRIZ COMMITMENT – IMPACT","panel-title")}`;
   const ox=90, oy=330, w=380, h=280;
   svg += `<line x1="${ox}" y1="${oy}" x2="${ox+w}" y2="${oy}" class="axis-line"/>`;
   svg += `<line x1="${ox}" y1="${oy}" x2="${ox}" y2="${oy-h}" class="axis-line"/>`;
@@ -422,35 +342,92 @@ function ciAxis(points){
   return svg;
 }
 
+function turinHeatmap(){
+  const cells = [
+    {x:220,y:70,w:120,h:60,val:60,label:"Centro"},
+    {x:220,y:140,w:120,h:60,val:45,label:"Semi-centro"},
+    {x:100,y:210,w:120,h:60,val:32,label:"Periferia sur"},
+    {x:340,y:210,w:120,h:60,val:24,label:"Periferia norte"},
+  ];
+  function heatColor(v){
+    const t = Math.max(0,Math.min(1,(v-20)/45));
+    const r = Math.round(168 + (180-168)*(1-t));
+    const g = Math.round(181 + (106-181)*(1-t));
+    const b = Math.round(138 + (114-138)*(1-t));
+    return `rgb(${r},${g},${b})`;
+  }
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"COBERTURA DE NIDI POR ZONA — TURÍN","panel-title")}`;
+  cells.forEach(c=>{
+    svg += `<rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="${heatColor(c.val)}" rx="3" class="growbar" data-target-opacity="1" style="opacity:0"/>`;
+    svg += txt(c.x+c.w/2, c.y+c.h/2, c.val+"%", "value-label", "middle");
+    svg += txt(c.x+c.w/2, c.y+c.h+16, c.label, "heat-label", "middle");
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+function turinFunnel(){
+  const stages = [
+    {label:"Solicitudes recibidas", val:7368, w:380},
+    {label:"Necesidad acuciante", val:1763, w:230},
+    {label:"Asignaciones anuales (media)", val:519, w:110},
+    {label:"Asignaciones en 2024", val:387, w:80},
+  ];
+  const startY = 55, rowH=58, cx=280;
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"EMBUDO DE VIVIENDA PÚBLICA — TURÍN","panel-title")}`;
+  stages.forEach((s,i)=>{
+    const y = startY + i*rowH;
+    const x = cx - s.w/2;
+    svg += `<rect x="${x}" y="${y}" width="0" height="34" fill="${COLORS.turin}" opacity="${1-i*0.18}" rx="2" class="growbar" data-target="${s.w}"/>`;
+    svg += txt(cx, y+50, s.label + " — " + s.val.toLocaleString('es-ES'), "caption", "middle");
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+function segregationGauge(){
+  const cx=280, cy=230, r=160;
+  const pct = 0.25;
+  const startAngle = Math.PI, endAngle = 0;
+  const angle = startAngle - (startAngle-endAngle)*pct;
+  const x2 = cx + r*Math.cos(angle), y2 = cy - Math.sin(angle)*r;
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"REDUCCIÓN DE LA SEGREGACIÓN ESCOLAR — BARCELONA","panel-title")}`;
+  svg += `<path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="#00000015" stroke-width="26"/>`;
+  svg += `<path id="gaugeArc" d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx-r} ${cy}" fill="none" stroke="${COLORS.barcelona}" stroke-width="26" data-target-x="${x2}" data-target-y="${y2}"/>`;
+  svg += txt(cx, cy-20, "-25%", "value-label", "middle");
+  svg += txt(cx, cy+30, "segregación escolar (2025)", "caption", "middle");
+  return svg;
+}
+
 function paired(centerVal, peripheryVal, labelA, labelB, title){
   const chartW=140, barH=180, startY=220, gap=100, baseX=140;
   const maxV=100;
   let svg = `<svg viewBox="0 0 560 320">${txt(0,24,title,"panel-title")}`;
   const hA = (centerVal/maxV)*barH, hB=(peripheryVal/maxV)*barH;
-  svg += bar(baseX, startY-hA, chartW, hA, COLORS.turin);
+  svg += `<rect x="${baseX}" y="${startY}" width="${chartW}" height="0" fill="${COLORS.turin}" class="fallbar" data-target="${hA}" data-mode="up" data-basey="${startY}"/>`;
   svg += txt(baseX+chartW/2, startY-hA-10, centerVal+"%", "value-label","middle");
   svg += txt(baseX+chartW/2, startY+20, labelA, "caption","middle");
   const baseX2 = baseX+chartW+gap;
-  svg += bar(baseX2, startY-hB, chartW, hB, COLORS.rosewood);
+  svg += `<rect x="${baseX2}" y="${startY}" width="${chartW}" height="0" fill="${COLORS.rosewood}" class="fallbar" data-target="${hB}" data-mode="up" data-basey="${startY}"/>`;
   svg += txt(baseX2+chartW/2, startY-hB-10, peripheryVal+"%", "value-label","middle");
   svg += txt(baseX2+chartW/2, startY+20, labelB, "caption","middle");
   svg += `</svg>`;
   return svg;
 }
 
-function counters(target1,target2,label1,label2,title){
+function counters(){
   return `<svg viewBox="0 0 560 320">
-    ${txt(0,24,title,"panel-title")}
+    ${txt(0,24,"SOLICITUDES vs. ASIGNACIONES — TURÍN","panel-title")}
     <text x="140" y="150" class="value-label" font-size="34" text-anchor="middle" id="ctA">0</text>
-    <text x="140" y="180" class="caption" text-anchor="middle">${label1}</text>
+    <text x="140" y="180" class="caption" text-anchor="middle">Solicitudes 2023</text>
     <text x="420" y="150" class="value-label" font-size="34" text-anchor="middle" id="ctB">0</text>
-    <text x="420" y="180" class="caption" text-anchor="middle">${label2}</text>
+    <text x="420" y="180" class="caption" text-anchor="middle">Asignadas en 2024</text>
   </svg>`;
 }
 
 function lineDiverge(){
   return `<svg viewBox="0 0 560 320">
-    ${txt(0,24,"ALQUILERES vs. SALARIOS (10 AÑOS)","panel-title")}
+    ${txt(0,24,"ALQUILERES vs. SALARIOS (10 AÑOS) — BARCELONA","panel-title")}
     <line x1="80" y1="260" x2="80" y2="60" class="axis-line"/>
     <line x1="80" y1="260" x2="480" y2="260" class="axis-line"/>
     <path d="M80,220 Q280,210 480,120" fill="none" stroke="${COLORS.barcelona}" stroke-width="3" stroke-dasharray="500" stroke-dashoffset="500" id="rentLine"/>
@@ -459,35 +436,21 @@ function lineDiverge(){
     ${txt(485,200,"+17,5% salario","caption")}
   </svg>`;
 }
-
-function diversityLine(){
-  return `<svg viewBox="0 0 560 320">
-    ${txt(0,24,"ÍNDICE DE DIVERSIDAD ESCOLAR — BARCELONA","panel-title")}
-    <line x1="80" y1="260" x2="80" y2="60" class="axis-line"/>
-    <line x1="80" y1="260" x2="480" y2="260" class="axis-line"/>
-    <path d="M80,190 Q280,140 480,90" fill="none" stroke="${COLORS.barcelona}" stroke-width="3" stroke-dasharray="500" stroke-dashoffset="500" id="divLine"/>
-    ${txt(80,275,"50%","caption")}
-    ${txt(460,275,"70%","caption")}
-  </svg>`;
-}
-
 function eduGap(){ return paired(60,25,"Centro","Periferia norte","COBERTURA DE NIDI — TURÍN"); }
-function discrimination(){ return paired(56.6,37.8,"Nombre catalán","Nombre árabe","RESPUESTA A SOLICITUDES DE ALQUILER"); }
+function discrimination(){ return paired(56.6,37.8,"Nombre catalán","Nombre árabe","RESPUESTA A SOLICITUDES DE ALQUILER — BCN"); }
 function athensEdu(){ return paired(81.5,95.4,"Atenas","Media UE","MATRÍCULA PREESCOLAR"); }
 function dyepFall(){
   return `<svg viewBox="0 0 560 320">
-    ${txt(0,24,"MATRÍCULA EN DYEP (EDUCACIÓN DE REFUGIADOS)","panel-title")}
+    ${txt(0,24,"MATRÍCULA EN DYEP (EDUCACIÓN DE REFUGIADOS) — ATENAS","panel-title")}
     <line x1="80" y1="60" x2="80" y2="260" class="axis-line"/>
     <line x1="80" y1="260" x2="480" y2="260" class="axis-line"/>
-    ${bar(140,100,90,0,COLORS.athens)}
+    <rect x="140" y="100" width="90" height="0" fill="${COLORS.athens}" class="fallbar" data-target="140" data-mode="down" data-basey="100"/>
     ${txt(185,90,"54–63% (2016)","caption","middle")}
-    ${bar(340,150,90,0,COLORS.rosewood)}
+    <rect x="340" y="150" width="90" height="0" fill="${COLORS.rosewood}" class="fallbar" data-target="110" data-mode="down" data-basey="150"/>
     ${txt(385,140,"43–53% (hoy)","caption","middle")}
-    <rect x="140" y="100" width="90" height="0" fill="${COLORS.athens}" class="fallbar" data-target="140"/>
-    <rect x="340" y="150" width="90" height="0" fill="${COLORS.rosewood}" class="fallbar" data-target="110"/>
   </svg>`;
 }
-function athensHousing(){ return housingBars('athens'); }
+function athensHousing(){ return housingBarsStatic('athens'); }
 
 const PANELS = {
   "0": ()=>heroCount(),
@@ -496,20 +459,20 @@ const PANELS = {
   "1b": ()=>ciAxis([]),
   "1c": ()=>ciAxis([]),
   "2a": ()=>ciAxis([]),
-  "2b": ()=>eduGap(),
-  "2c": ()=>housingBars('turin'),
+  "2b": ()=>turinHeatmap(),
+  "2c": ()=>turinFunnel(),
   "2d": ()=>ciAxis([{k:'turin',label:'Turín',color:COLORS.turin,cx:0.75,cy:0.62}]),
   "3a": ()=>ciAxis([{k:'turin',label:'Turín',color:COLORS.turin,cx:0.75,cy:0.62}]),
-  "3b": ()=>diversityLine(),
+  "3b": ()=>segregationGauge(),
   "3c": ()=>lineDiverge(),
   "3d": ()=>discrimination(),
   "4a": ()=>ciAxis([{k:'turin',label:'Turín',color:COLORS.turin,cx:0.75,cy:0.62},{k:'barcelona',label:'Barcelona',color:COLORS.barcelona,cx:0.7,cy:0.45}]),
   "4b": ()=>athensEdu(),
   "4c": ()=>dyepFall(),
-  "4d": ()=>housingBars('athens'),
-  "5a": ()=>housingBars('none'),
-  "5b": ()=>housingBars('all'),
-  "5c": ()=>housingBars('all'),
+  "4d": ()=>athensHousing(),
+  "5a": ()=>crossComparison(0),
+  "5b": ()=>crossComparison(4),
+  "5c": ()=>crossComparison(4),
   "6a": ()=>ciAxis([{k:'turin',label:'Turín',color:COLORS.turin,cx:0.75,cy:0.62},{k:'barcelona',label:'Barcelona',color:COLORS.barcelona,cx:0.7,cy:0.45},{k:'athens',label:'Atenas',color:COLORS.athens,cx:0.55,cy:0.25}]),
   "6b": ()=>ciAxis([{k:'turin',label:'Turín',color:COLORS.turin,cx:0.75,cy:0.62},{k:'barcelona',label:'Barcelona',color:COLORS.barcelona,cx:0.7,cy:0.45},{k:'athens',label:'Atenas',color:COLORS.athens,cx:0.55,cy:0.25}]),
   "6c": ()=>ciAxis([{k:'turin',label:'Turín',color:COLORS.turin,cx:0.75,cy:0.62},{k:'barcelona',label:'Barcelona',color:COLORS.barcelona,cx:0.7,cy:0.45},{k:'athens',label:'Atenas',color:COLORS.athens,cx:0.55,cy:0.25}]),
@@ -519,12 +482,12 @@ const frame = document.getElementById('vizFrame');
 let lastScene = null;
 
 function countUp(el, target, duration=900){
+  if(reducedMotion){ el.textContent = target; return; }
   const start = performance.now();
   function step(now){
     const p = Math.min(1,(now-start)/duration);
     el.textContent = Math.floor(p*target);
-    if(p<1) requestAnimationFrame(step);
-    else el.textContent = target;
+    if(p<1) requestAnimationFrame(step); else el.textContent = target;
   }
   requestAnimationFrame(step);
 }
@@ -541,38 +504,60 @@ function renderScene(scene){
   frame.appendChild(panel);
   requestAnimationFrame(()=>{
     panel.classList.add('active');
-    // trigger growing bars
     panel.querySelectorAll('.growbar').forEach(b=>{
-      const target = b.getAttribute('data-target');
-      b.style.transition = 'width .6s ease-out';
-      requestAnimationFrame(()=> b.setAttribute('width', target));
+      if(b.hasAttribute('data-target')){
+        const target = b.getAttribute('data-target');
+        b.style.transition = reducedMotion ? 'none' : 'width .6s ease-out';
+        requestAnimationFrame(()=> b.setAttribute('width', target));
+      } else if(b.hasAttribute('data-target-opacity')){
+        b.style.transition = reducedMotion ? 'none' : 'opacity .6s ease-out';
+        requestAnimationFrame(()=> b.style.opacity = b.getAttribute('data-target-opacity'));
+      }
     });
     panel.querySelectorAll('.fallbar').forEach(b=>{
-      const target = b.getAttribute('data-target');
-      b.style.transition = 'height .6s ease-out';
-      requestAnimationFrame(()=> b.setAttribute('height', target));
+      const target = parseFloat(b.getAttribute('data-target'));
+      const basey = parseFloat(b.getAttribute('data-basey'));
+      const mode = b.getAttribute('data-mode');
+      b.style.transition = reducedMotion ? 'none' : 'height .6s ease-out';
+      requestAnimationFrame(()=>{
+        if(mode==='up'){ b.setAttribute('height', target); b.setAttribute('y', basey - target); }
+        else { b.setAttribute('height', target); }
+      });
     });
+    const gaugeArc = panel.querySelector('#gaugeArc');
+    if(gaugeArc){
+      const tx = gaugeArc.getAttribute('data-target-x'), ty = gaugeArc.getAttribute('data-target-y');
+      const cx=280, cy=230, r=160;
+      gaugeArc.style.transition = reducedMotion ? 'none' : 'd .8s ease-out';
+      requestAnimationFrame(()=>{
+        gaugeArc.setAttribute('d', `M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${tx} ${ty}`);
+      });
+    }
     const rentLine = panel.querySelector('#rentLine');
-    if(rentLine){ rentLine.style.transition='stroke-dashoffset 1s ease-out'; requestAnimationFrame(()=>rentLine.style.strokeDashoffset='0'); }
+    if(rentLine){ rentLine.style.transition= reducedMotion?'none':'stroke-dashoffset 1s ease-out'; requestAnimationFrame(()=>rentLine.style.strokeDashoffset='0'); }
     const wageLine = panel.querySelector('#wageLine');
-    if(wageLine){ wageLine.style.transition='stroke-dashoffset 1.4s ease-out'; requestAnimationFrame(()=>wageLine.style.strokeDashoffset='0'); }
-    const divLine = panel.querySelector('#divLine');
-    if(divLine){ divLine.style.transition='stroke-dashoffset 1s ease-out'; requestAnimationFrame(()=>divLine.style.strokeDashoffset='0'); }
-    const ctA = panel.querySelector('#ctA');
-    if(ctA){ countUp(ctA,7368,1000); }
-    const ctB = panel.querySelector('#ctB');
-    if(ctB){ countUp(ctB,387,1000); }
+    if(wageLine){ wageLine.style.transition= reducedMotion?'none':'stroke-dashoffset 1.4s ease-out'; requestAnimationFrame(()=>wageLine.style.strokeDashoffset='0'); }
+    const ctA = panel.querySelector('#ctA'); if(ctA){ countUp(ctA,7368,1000); }
+    const ctB = panel.querySelector('#ctB'); if(ctB){ countUp(ctB,387,1000); }
   });
 }
 
 const heroCounter = document.getElementById('countHero');
 let heroCounted = false;
+const navButtons = document.querySelectorAll('.chapternav button');
+
+function setActiveChapter(scene){
+  const chapterStarts = {"0":"0","05":"0","1a":"1a","1b":"1a","1c":"1a","2a":"2a","2b":"2a","2c":"2a","2d":"2a","3a":"3a","3b":"3a","3c":"3a","3d":"3a","4a":"4a","4b":"4a","4c":"4a","4d":"4a","5a":"5a","5b":"5a","5c":"5a","6a":"6a","6b":"6a","6c":"6a","7":"7"};
+  const current = chapterStarts[scene] || "0";
+  navButtons.forEach(b=> b.classList.toggle('active', b.dataset.jump===current));
+}
 
 const observer = new IntersectionObserver((entries)=>{
   entries.forEach(entry=>{
     if(entry.isIntersecting){
       const scene = entry.target.dataset.scene;
       renderScene(scene);
+      setActiveChapter(scene);
       if(scene==='0' && !heroCounted){ heroCounted = true; countUp(heroCounter,4,1000); }
     }
   });
@@ -580,7 +565,13 @@ const observer = new IntersectionObserver((entries)=>{
 
 document.querySelectorAll('.beat').forEach(b=>observer.observe(b));
 
-// init first panel
+navButtons.forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const target = document.getElementById('jump-'+b.dataset.jump);
+    if(target) target.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth'});
+  });
+});
+
 renderScene('0');
 countUp(heroCounter,4,1000);
 </script>
