@@ -57,6 +57,16 @@
   .chapternav button:hover .lbl{opacity:1;}
   @media (max-width:860px){ .chapternav{display:none;} }
 
+  .next-arrow{
+    position:fixed; left:50%; bottom:26px; transform:translateX(-50%);
+    width:42px; height:42px; border-radius:50%; border:1.5px solid var(--cream);
+    background:rgba(43,29,20,0.55); color:var(--cream); cursor:pointer; z-index:20;
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    transition:transform .2s ease, opacity .2s ease; backdrop-filter:blur(2px);
+  }
+  .next-arrow:hover{transform:translateX(-50%) translateY(4px);}
+  .next-arrow.hide{opacity:0; pointer-events:none;}
+
   .layout{display:flex; align-items:flex-start; position:relative;}
   .layout::before{
     content:""; position:absolute; inset:0; opacity:0.14; pointer-events:none; transition:background .6s ease;
@@ -190,6 +200,8 @@
 <body>
 
 <div class="progressbar" id="progressBar"></div>
+
+<button class="next-arrow" id="nextArrow" aria-label="Ir a la siguiente sección">↓</button>
 
 <header class="hero-banner">
   <img src="hero-desk.jpg" alt="Escritorio con la carpeta de la tesis doctoral, notas manuscritas de la pregunta de investigación, una taza de café y un bolígrafo">
@@ -700,6 +712,20 @@ function updateProgress(){
 }
 window.addEventListener('scroll', updateProgress, {passive:true});
 updateProgress();
+
+const allBeats = Array.from(document.querySelectorAll('.beat'));
+const nextArrow = document.getElementById('nextArrow');
+nextArrow.addEventListener('click', ()=>{
+  const viewportMid = window.scrollY + window.innerHeight * 0.4;
+  let next = allBeats.find(b => (b.getBoundingClientRect().top + window.scrollY) > viewportMid + 10);
+  if(next) next.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth'});
+});
+function toggleArrowVisibility(){
+  const nearBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 40;
+  nextArrow.classList.toggle('hide', nearBottom);
+}
+window.addEventListener('scroll', toggleArrowVisibility, {passive:true});
+toggleArrowVisibility();
 
 renderScene('0');
 countUp(heroCounter,4,1000);
