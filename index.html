@@ -210,12 +210,11 @@
   <div class="narrative">
 
     <section class="beat hero" data-scene="0" data-wash="none" id="jump-0">
-      <div class="hanko">STL</div>
-      <span class="eyebrow">Doctoral Thesis · Scuola Superiore Sant'Anna, Pisa</span>
-      <h1>The Constitutional Role of Municipalities in the Governance of Social Rights</h1>
-      <p>Un estudio comparado de Turín, Barcelona y Atenas sobre cómo la autonomía local determina el acceso real a la educación, la salud y la vivienda.</p>
-      <div class="stat-line">Menos del <span class="count" id="countHero">0</span>%. En las tres ciudades.</div>
-      <p class="question">¿cómo puede fallar igual la vivienda pública en tres sistemas constitucionales tan distintos?</p>
+      <p style="font-size:1.15rem;">Here's a paradox: cities are expected to deliver housing, education, and healthcare, yet the constitutional frameworks that define social rights were rarely written with municipalities in mind.</p>
+      <p>That contradiction kept pulling at me while I was writing my PhD. National constitutions speak of rights and guarantees, but it is local governments, often without the powers or resources to match, that end up doing the work of making those rights real.</p>
+      <p>So I went looking for an answer, not just in theory, but on the ground, in the ordinances, budgets, and daily decisions that shape whether a right is actually lived or simply promised. That question took me to three cities: Turin, Barcelona, and Athens, each shaped by a different constitutional tradition, each improvising its own response to the same structural gap.</p>
+      <div class="stat-line">Less than <span class="count" id="countHero">0</span>%. In all three cities.</div>
+      <p class="question">how can public housing fail the same way across three such different constitutional systems?</p>
     </section>
 
     <section class="beat transition" data-scene="05">
@@ -572,7 +571,7 @@ function dyepFall(){
 function athensHousing(){ return housingBarsStatic('athens'); }
 
 const PANELS = {
-  "0": ()=>heroCount(),
+  "0": ()=>`<img src="intro-skyline.jpg" alt="Two teal-toned high-rise towers seen from below" style="width:100%;height:100%;object-fit:cover;border-radius:2px;">`,
   "05": ()=>heroCount(),
   "1a": ()=>ciAxis([]),
   "1b": ()=>ciAxis([]),
