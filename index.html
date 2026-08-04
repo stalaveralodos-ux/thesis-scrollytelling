@@ -167,6 +167,20 @@
   .panel-title{font-family:var(--sans); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; fill:var(--sage); font-weight:700;}
   .heat-label{font-family:var(--sans); font-size:12px; fill:var(--midnight);}
 
+  .hero-banner{
+    position:relative; width:100%; height:82vh; min-height:460px; overflow:hidden;
+  }
+  .hero-banner img{width:100%; height:100%; object-fit:cover; display:block;}
+  .hero-banner::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(43,29,20,0.05) 0%, rgba(43,29,20,0.15) 55%, rgba(43,29,20,0.92) 100%);
+  }
+  .hero-banner-text{
+    position:absolute; left:0; right:0; bottom:0; padding:5vh 7vw 4.5vh; z-index:2;
+  }
+  .hero-banner-text .eyebrow{color:var(--sage);}
+  .hero-banner-text h1{font-size:clamp(1.8rem,4vw,3rem); max-width:16ch; color:var(--cream); text-shadow:0 2px 18px rgba(0,0,0,0.5);}
+
   @media (max-width:860px){
     .layout{flex-direction:column;}
     .narrative,.viz-col{width:100%;}
@@ -174,12 +188,21 @@
     .viz-frame{max-width:100%;}
     .narrative{padding:6vh 6vw;}
     .share-contact{flex-direction:column;}
+    .hero-banner{height:60vh;}
   }
 </style>
 </head>
 <body>
 
 <div class="progressbar" id="progressBar"></div>
+
+<header class="hero-banner">
+  <img src="hero-desk.jpg" alt="Escritorio con la carpeta de la tesis doctoral, notas manuscritas de la pregunta de investigación, una taza de café y un bolígrafo">
+  <div class="hero-banner-text">
+    <span class="eyebrow">Doctoral Thesis · Scuola Superiore Sant'Anna, Pisa</span>
+    <h1>The Constitutional Role of Municipalities in the Governance of Social Rights</h1>
+  </div>
+</header>
 
 <nav class="chapternav" id="chapterNav">
   <button data-jump="0" style="background:var(--paper)"><span class="lbl">Apertura</span></button>
@@ -197,10 +220,7 @@
 
     <section class="beat hero" data-scene="0" data-wash="none" id="jump-0">
       <div class="hanko">STL</div>
-      <span class="eyebrow">Doctoral Thesis · Scuola Superiore Sant'Anna, Pisa</span>
-      <h1>The Constitutional Role of Municipalities in the Governance of Social Rights</h1>
       <p>Un estudio comparado de Turín, Barcelona y Atenas sobre cómo la autonomía local determina el acceso real a la educación, la salud y la vivienda.</p>
-      <div class="photo-slot"><span>[ foto ]</span>Espacio reservado: flat-lay del escritorio con la tesis, el sello y los objetos de trabajo.</div>
       <div class="stat-line">Menos del <span class="count" id="countHero">0</span>%. En las tres ciudades.</div>
       <p class="question">¿cómo puede fallar igual la vivienda pública en tres sistemas constitucionales tan distintos?</p>
     </section>
