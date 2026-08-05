@@ -186,6 +186,11 @@
     border-radius:3px; box-shadow:0 20px 60px rgba(0,0,0,0.45);
   }
 
+  .photo-caption{
+    font-size:0.75rem; color:var(--midnight); text-align:center; margin-top:0.6rem; font-family:var(--sans);
+  }
+  .photo-caption a{color:var(--midnight); text-decoration:underline;}
+
   @media (max-width:860px){
     .layout{flex-direction:column;}
     .narrative,.viz-col{width:100%;}
@@ -222,9 +227,10 @@
   <div class="narrative">
 
     <section class="beat hero" data-scene="0" data-wash="none" id="jump-0">
-      <p style="font-size:1.15rem;">Here's a paradox: cities are expected to deliver housing, education, and healthcare, yet the constitutional frameworks that define social rights were rarely written with municipalities in mind.</p>
-      <p>That contradiction kept pulling at me while I was writing my PhD. National constitutions speak of rights and guarantees, but it is local governments, often without the powers or resources to match, that end up doing the work of making those rights real.</p>
-      <p>So I went looking for an answer, not just in theory, but on the ground, in the ordinances, budgets, and daily decisions that shape whether a right is actually lived or simply promised. That question took me to three cities: Turin, Barcelona, and Athens, each shaped by a different constitutional tradition, each improvising its own response to the same structural gap.</p>
+      <p style="font-size:1.15rem;"><strong>Why Turin, Barcelona, and Athens?</strong></p>
+      <p>It's the question any reader would ask when they see the map behind this research. Why these three cities, and not others?</p>
+      <p>The answer actually starts before the cities come into focus. First came the choice of countries: southern Mediterranean Europe, that stretch of the continent bound by a shared recent history of economic crisis, welfare state cutbacks, and, above all, a municipal response that took center stage when central governments failed to sustain basic social rights. Italy, Spain, and Greece are not a random pick: they are the three countries where the 2008 crisis hit hardest, and where local governments, almost out of necessity, had to reinvent their role.</p>
+      <p>From there, the research scales down from the national to the urban. Turin, Barcelona, and Athens are not just capitals or major cities: they are laboratories. Each represents a distinct form of local governance in the face of social exclusion, and together they allow a comparison of how the same challenge, guaranteeing social rights as the central state retreats, gets resolved differently depending on political tradition, social fabric, and even the color of the municipal government.</p>
       <div class="stat-line">Less than <span class="count" id="countHero">0</span>%. In all three cities.</div>
       <p class="question">how can public housing fail the same way across three such different constitutional systems?</p>
     </section>
@@ -441,8 +447,6 @@ function housingBarsStatic(activeKey){
   svg += `</svg>`;
   return svg;
 }
-function heroCount(){ return `<svg viewBox="0 0 560 320">${txt(0,24,"VIVIENDA PÚBLICA — LAS TRES CIUDADES","panel-title")}${housingBarsInner()}</svg>`; }
-
 function crossComparison(step){
   const data = [
     {k:'turin', label:'Turín', val:3.4, color:COLORS.turin, min:1},
@@ -584,7 +588,10 @@ function athensHousing(){ return housingBarsStatic('athens'); }
 
 const PANELS = {
   "0": ()=>`<img src="intro-skyline.jpg" alt="Two teal-toned high-rise towers seen from below" style="width:100%;height:100%;object-fit:cover;border-radius:2px;">`,
-  "05": ()=>heroCount(),
+  "05": ()=>`<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <img src="assets/europe-map-photo.jpg" alt="Close-up of a wooden map of Europe" style="width:100%;height:85%;object-fit:cover;border-radius:2px;">
+    <p class="photo-caption">Photo by <a href="https://unsplash.com/es/@tahmeeda97?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" target="_blank" rel="noopener">Tahmeed Ahmad</a> on <a href="https://unsplash.com/es/fotos/un-primer-plano-de-un-mapa-del-mundo-KYfiXxoQYdo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" target="_blank" rel="noopener">Unsplash</a></p>
+  </div>`,
   "1a": ()=>ciAxis([]),
   "1b": ()=>ciAxis([]),
   "1c": ()=>ciAxis([]),
