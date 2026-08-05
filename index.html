@@ -227,16 +227,13 @@
   <div class="narrative">
 
     <section class="beat hero" data-scene="0" data-wash="none" id="jump-0">
-      <p style="font-size:1.15rem;"><strong>Why Turin, Barcelona, and Athens?</strong></p>
-      <p>It's the question any reader would ask when they see the map behind this research. Why these three cities, and not others?</p>
-      <p>The answer actually starts before the cities come into focus. First came the choice of countries: southern Mediterranean Europe, that stretch of the continent bound by a shared recent history of economic crisis, welfare state cutbacks, and, above all, a municipal response that took center stage when central governments failed to sustain basic social rights. Italy, Spain, and Greece are not a random pick: they are the three countries where the 2008 crisis hit hardest, and where local governments, almost out of necessity, had to reinvent their role.</p>
-      <p>From there, the research scales down from the national to the urban. Turin, Barcelona, and Athens are not just capitals or major cities: they are laboratories. Each represents a distinct form of local governance in the face of social exclusion, and together they allow a comparison of how the same challenge, guaranteeing social rights as the central state retreats, gets resolved differently depending on political tradition, social fabric, and even the color of the municipal government.</p>
-      <div class="stat-line">Less than <span class="count" id="countHero">0</span>%. In all three cities.</div>
-      <p class="question">how can public housing fail the same way across three such different constitutional systems?</p>
+      <p style="font-size:1.15rem;">Here's a paradox: cities are expected to deliver housing, education, and healthcare, yet the constitutional frameworks that define social rights were rarely written with municipalities in mind.</p>
+      <p>That contradiction kept pulling at me while I was writing my PhD. National constitutions speak of rights and guarantees, but it is local governments, often without the powers or resources to match, that end up doing the work of making those rights real.</p>
+      <p>So I went looking for an answer, not just in theory, but on the ground, in the ordinances, budgets, and daily decisions that shape whether a right is actually lived or simply promised. That question took me to three cities: Turin, Barcelona, and Athens, each shaped by a different constitutional tradition, each improvising its own response to the same structural gap.</p>
     </section>
 
     <section class="beat transition" data-scene="05">
-      <p style="font-style:italic; max-width:44ch;">En Europa, la realización de derechos sociales depende cada vez más de los municipios. Pero su capacidad no es homogénea: está moldeada por el diseño constitucional.</p>
+      <p style="font-style:italic; max-width:44ch;">Why Turin, Barcelona, and Athens? It's the question any reader would ask when they see the map behind this research. Why these three cities, and not others? The answer actually starts before the cities come into focus. First came the choice of countries: southern Mediterranean Europe, that stretch of the continent bound by a shared recent history of economic crisis, welfare state cutbacks, and, above all, a municipal response that took center stage when central governments failed to sustain basic social rights. Italy, Spain, and Greece are not a random pick: they are the three countries where the 2008 crisis hit hardest, and where local governments, almost out of necessity, had to reinvent their role. From there, the research scales down from the national to the urban. Turin, Barcelona, and Athens are not just capitals or major cities: they are laboratories. Each represents a distinct form of local governance in the face of social exclusion, and together they allow a comparison of how the same challenge, guaranteeing social rights as the central state retreats, gets resolved differently depending on political tradition, social fabric, and even the color of the municipal government.</p>
       <p class="question">¿qué significa "autonomía" si al final no alcanza para cumplir?</p>
     </section>
 
@@ -622,6 +619,7 @@ const layoutWash = document.getElementById('layoutWash');
 let lastScene = null;
 
 function countUp(el, target, duration=900){
+  if(!el) return;
   if(reducedMotion){ el.textContent = target; return; }
   const start = performance.now();
   function step(now){
