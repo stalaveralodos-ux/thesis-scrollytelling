@@ -1,0 +1,113 @@
+---
+layout: chapter
+title: The Framework
+wash: misty
+permalink: /framework/
+description: "Commitment or impact? The theoretical framework and methodology behind the comparative study of Turin, Barcelona, and Athens."
+---
+<div class="narrative">
+
+  <section class="beat" data-scene="1-intro" id="jump-1-intro">
+    <span class="eyebrow">01 — The Framework</span>
+    <p style="max-width:44ch;">Why Turin, Barcelona, and Athens? The answer starts before the cities come into focus. First came the choice of countries: southern Mediterranean Europe, a stretch of the continent bound by a shared recent history of economic crisis, welfare state cutbacks, and a municipal response that took centre stage when central governments failed to sustain basic social rights.</p>
+    <p style="max-width:44ch;">Italy, Spain, and Greece are not a random pick: they are the three countries where the 2008 crisis hit hardest, and where local governments, almost out of necessity, had to reinvent their role.</p>
+    <p class="question">so what exactly was I trying to find out?</p>
+  </section>
+
+  <section class="beat" data-scene="1a">
+    <h2>Commitment or impact?</h2>
+    <blockquote>How does local autonomy shape the capacity of municipalities to implement fundamental social rights — housing, health, and education — on a universal basis, ensuring access for all residents?</blockquote>
+    <p>Legal scholarship has been slower than policy debate to take cities seriously: most research on decentralisation looks at the vertical split between national and regional governments, while human rights scholarship tends to stay at the national or supranational level. Municipalities end up treated as mere administrative executors, even though they are de facto responsible for meeting acute social needs.</p>
+    <p class="question">but how do you actually measure whether a city is delivering, not just promising?</p>
+  </section>
+
+  <section class="beat" data-scene="1b">
+    <p><strong>Key move —</strong> the framework separates two dimensions that are usually blurred together. <strong>Commitment</strong>: the proactive choices a municipal government makes — strategic plans, resource allocation, participation in innovation networks. <strong>Impact</strong>: the tangible outcomes of those choices — coverage, accessibility, inclusion.</p>
+    <p>Keeping the two apart matters: it stops ambitious discourse from being mistaken for actual results, and it makes visible how much of the gap between the two is explained by the institutional opportunities — or constraints — each city actually has.</p>
+    <p class="question">how do you pick three cities that let you test that, fairly?</p>
+  </section>
+
+  <section class="beat" data-scene="1c">
+    <p>Turin, Barcelona, and Athens were selected as <em>"most similar cases"</em>: each faces acute social challenges, manages diverse populations, and has expressed strong policy commitment to social rights through strategic plans and international networks. What varies is the constitutional design underneath — Spain's quasi-federalism, Italy's regionalised system, Greece's centralised model.</p>
+    <p>The empirical material combines legal texts, constitutional case law, municipal regulations, strategic plans, and statistical data, complemented by semi-structured interviews with local stakeholders in all three cities — not as the thesis's systematic evidence base, but to contextualise the documentary analysis with a practitioner's view of everyday dynamics.</p>
+    <p class="question">let's start with the city that has the least formal power — what does Turin do with what little it has?</p>
+    <a class="chapter-next" href="{{ '/turin/' | relative_url }}">next: Turin — high commitment, moderate impact →</a>
+  </section>
+
+</div>
+
+<script>
+function txt(x,y,text,cls="caption",anchor="start"){ return `<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${text}</text>`; }
+
+function citiesIntro(){
+  return `<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 0.4rem;">
+    <div style="background:var(--misty);border-radius:4px;padding:1rem 1.2rem;color:var(--midnight);">
+      <div class="panel-title-html" style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;opacity:0.75;">Italy</div>
+      <div style="font-family:var(--serif);font-size:1.15rem;margin-top:2px;">Turin — regionalised system</div>
+    </div>
+    <div style="background:var(--rosewood);border-radius:4px;padding:1rem 1.2rem;color:#fff;">
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;opacity:0.85;">Spain</div>
+      <div style="font-family:var(--serif);font-size:1.15rem;margin-top:2px;">Barcelona — quasi-federalism</div>
+    </div>
+    <div style="background:var(--sage);border-radius:4px;padding:1rem 1.2rem;color:var(--midnight);">
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;opacity:0.75;">Greece</div>
+      <div style="font-family:var(--serif);font-size:1.15rem;margin-top:2px;">Athens — centralised model</div>
+    </div>
+  </div>`;
+}
+
+function ciAxis(points){
+  let svg = `<svg viewBox="0 0 560 400">${txt(0,24,"COMMITMENT – IMPACT MATRIX","panel-title")}`;
+  const ox=90, oy=330, w=380, h=280;
+  svg += `<line x1="${ox}" y1="${oy}" x2="${ox+w}" y2="${oy}" class="axis-line"/>`;
+  svg += `<line x1="${ox}" y1="${oy}" x2="${ox}" y2="${oy-h}" class="axis-line"/>`;
+  svg += txt(ox+w-70, oy+22, "COMMITMENT →", "caption");
+  svg += txt(ox-6, oy-h-6, "↑ IMPACT", "caption");
+  points.forEach(pt=>{
+    svg += `<circle cx="${ox+pt.cx*w}" cy="${oy-pt.cy*h}" r="8" fill="${pt.color}"/>`;
+    svg += txt(ox+pt.cx*w+12, oy-pt.cy*h+4, pt.label, "caption");
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+function definitionCards(){
+  return `<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;gap:16px;">
+    <div style="background:var(--paper);border-radius:4px;padding:1.3rem 1.4rem;">
+      <div style="font-family:var(--hand);font-size:1.4rem;color:var(--rosewood);">Commitment</div>
+      <div style="font-family:var(--sans);font-size:0.92rem;color:var(--midnight);margin-top:0.4rem;">Strategic plans · resource allocation · innovation networks — the proactive choices a city makes.</div>
+    </div>
+    <div style="text-align:center;font-family:var(--hand);font-size:1.6rem;color:var(--midnight);opacity:0.5;">↓ does not always equal ↓</div>
+    <div style="background:var(--midnight);border-radius:4px;padding:1.3rem 1.4rem;">
+      <div style="font-family:var(--hand);font-size:1.4rem;color:var(--blush);">Impact</div>
+      <div style="font-family:var(--sans);font-size:0.92rem;color:var(--cream);margin-top:0.4rem;">Coverage · accessibility · inclusion — the outcomes people actually experience.</div>
+    </div>
+  </div>`;
+}
+
+function mostSimilarCases(){
+  const rows = [
+    {city:"Turin", model:"Regionalised (Art. 117)", color:"var(--misty)"},
+    {city:"Barcelona", model:"Quasi-federal (Art. 140)", color:"var(--rosewood)"},
+    {city:"Athens", model:"Centralised (Art. 102)", color:"var(--sage)"},
+  ];
+  let html = `<div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;gap:12px;">
+    <div style="font-family:var(--sans);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--midnight);opacity:0.6;margin-bottom:4px;">Held constant: acute social challenges, diverse populations, declared political commitment</div>`;
+  rows.forEach(r=>{
+    html += `<div style="display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:4px;padding:0.8rem 1rem;">
+      <div style="width:14px;height:14px;border-radius:50%;background:${r.color};flex-shrink:0;"></div>
+      <div style="font-family:var(--serif);font-size:1rem;color:var(--midnight);min-width:90px;">${r.city}</div>
+      <div style="font-family:var(--sans);font-size:0.85rem;color:var(--midnight);opacity:0.8;">${r.model}</div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+window.PANELS = {
+  "1-intro": ()=>citiesIntro(),
+  "1a": ()=>ciAxis([]),
+  "1b": ()=>definitionCards(),
+  "1c": ()=>mostSimilarCases(),
+};
+</script>
