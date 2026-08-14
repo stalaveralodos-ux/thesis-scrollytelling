@@ -1,0 +1,106 @@
+---
+layout: chapter
+title: Turin
+wash: misty
+description: "High commitment, moderate impact — Turin and Italy's regionalised system of social rights."
+---
+<div class="narrative">
+
+  <section class="beat" data-scene="2a" id="jump-2a">
+    <span class="tag turin">Turin</span>
+    <h2>High commitment, moderate impact</h2>
+    <div class="photo-slot"><span>[ photo ]</span>Reserved space: aerial view of Turin.</div>
+    <p>Italy: a regionalised system (Art. 117 of the Constitution). Municipal space is mediated by regional law and by constitutional case law.</p>
+    <p>The <span class="glossary-term">Corte costituzionale<span class="tip">The Constitutional Court has at times protected local discretion in education and social services, but tends to confirm regional primacy in health and housing.</span></span> has occasionally protected local discretion in education and social services, but tends to confirm regional primacy in health and housing.</p>
+    <p class="question">is innovation enough when the city's map isn't level?</p>
+  </section>
+
+  <section class="beat" data-scene="2b">
+    <p><strong>Key figure —</strong> childcare (<em>nidi</em>) coverage: 38.3% city-wide, above the 33% minimum target. But the map tells a different story: over 60% in the centre, under 25% in the northern periphery.</p>
+    <p class="question">if education already shows this gap, what happens with something as scarce as housing?</p>
+  </section>
+
+  <section class="beat" data-scene="2c">
+    <p><strong>Key figure —</strong> 17,656 public housing units (ERP) in 2024 — just 3.4% of the total stock. The latest call received 7,368 applications, of which 1,763 flagged as urgent need. The city allocates roughly 519 homes a year on average since 1996 (387 in 2024).</p>
+    <p class="question">what's left for a city when demand outstrips supply fourteen to one?</p>
+  </section>
+
+  <section class="beat" data-scene="2d">
+    <blockquote>Turin would rank high in commitment but only moderate-to-high in impact, reflecting the tension between ambition and constraint.</blockquote>
+    <p style="font-size:0.95rem; color:#c9c0ae;">Health: Case della Comunità — multidisciplinary primary and social care centres, decentralised by neighbourhood.</p>
+    <a class="chapter-next" href="{{ '/barcelona/' | relative_url }}">next: Barcelona — more regulatory power, better results? →</a>
+  </section>
+
+</div>
+
+<script>
+const COLORS = { turin:"#A9B7C6", barcelona:"#B46A72", athens:"#A8B58A", eu:"rgba(45,58,71,0.45)", ink:"#2D3A47" };
+
+function bar(x,y,w,h,fill,rx=2){ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" rx="${rx}"/>`; }
+function txt(x,y,text,cls="caption",anchor="start"){ return `<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${text}</text>`; }
+
+function ciAxis(points){
+  let svg = `<svg viewBox="0 0 560 400">${txt(0,24,"COMMITMENT – IMPACT MATRIX","panel-title")}`;
+  const ox=90, oy=330, w=380, h=280;
+  svg += `<line x1="${ox}" y1="${oy}" x2="${ox+w}" y2="${oy}" class="axis-line"/>`;
+  svg += `<line x1="${ox}" y1="${oy}" x2="${ox}" y2="${oy-h}" class="axis-line"/>`;
+  svg += txt(ox+w-70, oy+22, "COMMITMENT →", "caption");
+  svg += txt(ox-6, oy-h-6, "↑ IMPACT", "caption");
+  points.forEach(pt=>{
+    svg += `<circle cx="${ox+pt.cx*w}" cy="${oy-pt.cy*h}" r="8" fill="${pt.color}"/>`;
+    svg += txt(ox+pt.cx*w+12, oy-pt.cy*h+4, pt.label, "caption");
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+function turinHeatmap(){
+  const cells = [
+    {x:220,y:70,w:120,h:60,val:60,label:"City centre"},
+    {x:220,y:140,w:120,h:60,val:45,label:"Semi-central"},
+    {x:100,y:210,w:120,h:60,val:32,label:"Southern periphery"},
+    {x:340,y:210,w:120,h:60,val:24,label:"Northern periphery"},
+  ];
+  function heatColor(v){
+    const t = Math.max(0,Math.min(1,(v-20)/45));
+    const r = Math.round(168 + (180-168)*(1-t));
+    const g = Math.round(181 + (106-181)*(1-t));
+    const b = Math.round(138 + (114-138)*(1-t));
+    return `rgb(${r},${g},${b})`;
+  }
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"CHILDCARE COVERAGE BY AREA — TURIN","panel-title")}`;
+  cells.forEach(c=>{
+    svg += `<rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="${heatColor(c.val)}" rx="3" class="growbar" data-target-opacity="1" style="opacity:0"/>`;
+    svg += txt(c.x+c.w/2, c.y+c.h/2, c.val+"%", "value-label", "middle");
+    svg += txt(c.x+c.w/2, c.y+c.h+16, c.label, "heat-label", "middle");
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+function turinFunnel(){
+  const stages = [
+    {label:"Applications received", val:7368, w:380},
+    {label:"Urgent need", val:1763, w:230},
+    {label:"Average annual allocations", val:519, w:110},
+    {label:"Allocations in 2024", val:387, w:80},
+  ];
+  const startY = 55, rowH=58, cx=280;
+  let svg = `<svg viewBox="0 0 560 320">${txt(0,24,"PUBLIC HOUSING WAITLIST FUNNEL — TURIN","panel-title")}`;
+  stages.forEach((s,i)=>{
+    const y = startY + i*rowH;
+    const x = cx - s.w/2;
+    svg += `<rect x="${x}" y="${y}" width="0" height="34" fill="${COLORS.turin}" opacity="${1-i*0.18}" rx="2" class="growbar" data-target="${s.w}"/>`;
+    svg += txt(cx, y+50, s.label + " — " + s.val.toLocaleString('en-US'), "caption", "middle");
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+window.PANELS = {
+  "2a": ()=>ciAxis([]),
+  "2b": ()=>turinHeatmap(),
+  "2c": ()=>turinFunnel(),
+  "2d": ()=>ciAxis([{k:'turin',label:'Turin',color:COLORS.turin,cx:0.75,cy:0.62}]),
+};
+</script>
