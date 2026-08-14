@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<div class="progressbar" id="progressBar"></div>
+<button class="next-arrow" id="nextArrow" aria-label="Go to next section">↓</button>
+
+<div class="layout" style="--chapter-wash: var(--{{ page.wash }}, transparent);">
+  {{ content }}
+  <div class="viz-col"><div class="viz-frame" id="vizFrame"></div></div>
+</div>
+
+<script src="{{ '/assets/js/engine.js' | relative_url }}"></script>
