@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ page.description | default: site.description }}">
+<link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ page.title | default: site.title }}">
+<meta property="og:description" content="{{ page.description | default: site.description }}">
+<meta property="og:image" content="https://stalaveralodos-ux.github.io/thesis-scrollytelling/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="author" content="Silvia Talavera Lodos">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="hanko-mini" href="{{ '/' | relative_url }}" aria-label="Home">STL</a>
+  <nav>
+    <a href="{{ '/' | relative_url }}">Home</a>
+    <a class="wash-misty" href="{{ '/framework/' | relative_url }}">01 · Framework</a>
+    <a class="wash-misty" href="{{ '/turin/' | relative_url }}">02 · Turin</a>
+    <a class="wash-rosewood" href="{{ '/barcelona/' | relative_url }}">03 · Barcelona</a>
+    <a class="wash-sage" href="{{ '/athens/' | relative_url }}">04 · Athens</a>
+    <a href="{{ '/comparative/' | relative_url }}">05 · Comparative</a>
+    <a class="wash-blush" href="{{ '/practice/' | relative_url }}">06 · Practice</a>
+  </nav>
+</header>
+
+{{ content }}
+
+<div class="share-contact">
+  <div>
+    <h3>Share</h3>
+    <div class="share-buttons">
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://stalaveralodos-ux.github.io/thesis-scrollytelling/" target="_blank" rel="noopener" aria-label="Share on LinkedIn">in</a>
+      <a href="https://twitter.com/intent/tweet?url=https://stalaveralodos-ux.github.io/thesis-scrollytelling/&text=The%20Constitutional%20Role%20of%20Municipalities%20in%20the%20Governance%20of%20Social%20Rights" target="_blank" rel="noopener" aria-label="Share on X">X</a>
+      <a href="mailto:?subject=The%20Constitutional%20Role%20of%20Municipalities&body=https://stalaveralodos-ux.github.io/thesis-scrollytelling/" aria-label="Share by email">@</a>
+    </div>
+  </div>
+  <div>
+    <h3>Contact</h3>
+    <form class="contact-form" action="mailto:s.talaveralodos@gmail.com" method="post" enctype="text/plain">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="message" rows="3" placeholder="Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
